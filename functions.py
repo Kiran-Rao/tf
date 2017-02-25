@@ -19,6 +19,16 @@ def create_samples(n_clusters, n_samples_per_cluster, n_features, embiggen_facto
     centroids = tf.concat(centroids, 0, name='centroids')
     return centroids, samples
 
-
-if __name__ == "__main__":
-	create_samples(3, 100, 2, 700, 123)
+def plot_clusters(all_samples, centroids, n_samples_per_cluster):
+    import matplotlib.pyplot as plt
+    # Plot out the different clusters
+    # Choose a different colour for each cluster
+    colour = plt.cm.rainbow(np.linspace(0,1,len(centroids)))
+    for i, centroid in enumerate(centroids):
+        # Grab just the samples fpr the given cluster and plot them out with a new colour
+        samples = all_samples[i*n_samples_per_cluster:(i+1)*n_samples_per_cluster]
+        plt.scatter(samples[:,0], samples[:,1], c=colour[i])
+        # Also plot centroid
+        plt.plot(centroid[0], centroid[1], markersize=35, marker="x", color='k', mew=10)
+        plt.plot(centroid[0], centroid[1], markersize=30, marker="x", color='m', mew=5)
+    plt.show()
