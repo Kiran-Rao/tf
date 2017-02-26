@@ -18,5 +18,4 @@ model = tf.global_variables_initializer()
 with tf.Session() as session:
 	sample_values = session.run(samples)
 	centroid_values = session.run(centroids)
-	print sample_values, centroid_values
 	plot_clusters(sample_values, centroid_values, n_samples_per_cluster)
