@@ -61,8 +61,8 @@ def create_samples(n_clusters, n_samples_per_cluster, n_features, embiggen_facto
         samples.append(current_samples)
         centroids.append(current_centroid)
 
-    samples = tf.concat(0, samples, name='samples')
-    centroids = tf.concat(0, centroids, name='centroids')
+    samples = tf.concat(samples, 0, name='samples')
+    centroids = tf.concat(centroids, 0, name='centroids')
 
     return samples, centroids
 
@@ -78,7 +78,7 @@ def choose_random_centroids(samples, n_clusters):
     from among `samples`. These random samples will be the initial centroid
     locations that your algorithm will use.
     """
-
+    return samples
     pass
 
 def assign_to_nearest(samples, centroids):
@@ -114,9 +114,9 @@ def update_centroids(samples, nearest_indices, n_clusters):
     """
 
     pass
-    
+
 def plot_centroid_history(all_samples, centroid_history, n_samples_per_cluster, num_clusters):
-    """Generates a plot showing the locations of the centroids for each 
+    """Generates a plot showing the locations of the centroids for each
     iteration of the model, with darker Xs representing centroid locations at
     later iterations, and lighter Xs the centroids earlier in the learning
     process.
@@ -133,17 +133,16 @@ def plot_centroid_history(all_samples, centroid_history, n_samples_per_cluster, 
     num_loops = len(centroid_history)/num_clusters
 
     colours = ['b.','g.','r.','c.','m.','y.']
-    
+
     for i in np.arange(num_clusters):
         samples = all_samples[i*n_samples_per_cluster:(i + 1)*n_samples_per_cluster]
         plt.plot(samples[:,0], samples[:,1], colours[i])
 
     for loop in np.arange(num_loops):
-        
+
         for centroid_index in np.arange(num_clusters):
-            
+
             centroid = centroid_history[num_clusters * loop + centroid_index]
             plt.plot(centroid[0], centroid[1], 'kx', markersize=10, alpha=(1 + loop)/num_loops)
 
     plt.show()
-            
