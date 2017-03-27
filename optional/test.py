@@ -6,7 +6,7 @@ from data_generator import create_samples, choose_random_centroids, plot_centroi
 class TestDataGeneratorAssignToNearest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-         (samples, centroids) = create_samples(3, 20, 2, 50, 1337)
+         (samples, centroids) = create_samples(3, 5, 1, 50, 1337)
          cls.samples = samples
          cls.centroids = centroids
 
@@ -15,6 +15,9 @@ class TestDataGeneratorAssignToNearest(unittest.TestCase):
 
         with tf.Session() as session:
             random_centroid_values = session.run(random_centroids)
+            sample_values = session.run(self.samples)
+            print(random_centroid_values)
+            print(sample_values)
             print('aoeu')
 
         self.assertTrue(True)
@@ -25,13 +28,3 @@ class TestDataGeneratorAssignToNearest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
-(samples, centroids) = create_samples(3, 20, 2, 50, 1337)
-
-print(samples)
-
-model = tf.global_variables_initializer()
-
-# with tf.Session() as session:
-#     session.

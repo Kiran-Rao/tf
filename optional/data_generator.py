@@ -52,9 +52,11 @@ def create_samples(n_clusters, n_samples_per_cluster, n_features, embiggen_facto
     centroids = []
     samples = []
 
+    tf.set_random_seed(seed)
+
     for _ in range(n_clusters):
 
-        current_samples = tf.random_normal([n_samples_per_cluster, n_features], stddev=5.0,seed=seed)
+        current_samples = tf.random_normal([n_samples_per_cluster, n_features], stddev=5.0)
         current_centroid = tf.random_normal([1, n_features], stddev=5.0) * embiggen_factor + embiggen_factor/2
         current_samples = current_samples + current_centroid
 
@@ -67,7 +69,9 @@ def create_samples(n_clusters, n_samples_per_cluster, n_features, embiggen_facto
     return samples, centroids
 
 def choose_random_centroids(samples, n_clusters):
-    """Selects and returns randomly chosen centroids from samples. Remember:
+    """Selects and returns randomly chosen centroids from samples.
+
+    Remember:
     samples is a tf.constant, not a numpy array, so you need to manipulate it
     using TensorFlow functions, and it won't have a value until it's run in a
     tf.Session().
@@ -78,7 +82,12 @@ def choose_random_centroids(samples, n_clusters):
     from among `samples`. These random samples will be the initial centroid
     locations that your algorithm will use.
     """
-    return samples
+
+    shuffled_samples = tf.random_shuffle(samples)
+    top_n_samples = tf.gather(samples, tf.range(0, n_clusters))
+
+    return top_n_samples
+
     pass
 
 def assign_to_nearest(samples, centroids):
