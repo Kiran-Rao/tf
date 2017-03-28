@@ -106,7 +106,14 @@ def assign_to_nearest(samples, centroids):
     :return: The indices of the closest centroids to each sample.
     """
 
-    pass
+    expanded_centroids = tf.expand_dims(centroids, 0)
+    expanded_samples = tf.expand_dims(samples, 1)
+
+    distances = tf.reduce_sum(tf.squared_difference(expanded_samples, expanded_centroids), 2)
+    indices = tf.argmin(distances, 1)
+
+    return indices
+
 
 def update_centroids(samples, nearest_indices, n_clusters):
     """Determines the new centroid locations according to the K-means
@@ -119,8 +126,10 @@ def update_centroids(samples, nearest_indices, n_clusters):
     :param n_clusters: The number of clusters.
     :return: A tf.constant giving the coordinates of the new centroids.
     """
+    partitions = tf.dynamic_partition(samples, nearest_indices, n_clusters)
+    new_centroids = tf.concat([tf.expand_dims(tf.reduce_mean(partition, 0), 0) for partition in partitions], 0)
 
-    pass
+    return new_centroids
 
 def plot_centroid_history(all_samples, centroid_history, n_samples_per_cluster, num_clusters):
     """Generates a plot showing the locations of the centroids for each
