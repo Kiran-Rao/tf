@@ -84,11 +84,9 @@ def choose_random_centroids(samples, n_clusters):
     """
 
     shuffled_samples = tf.random_shuffle(samples)
-    top_n_samples = tf.gather(samples, tf.range(0, n_clusters))
+    top_n_samples = tf.gather(shuffled_samples, tf.range(0, n_clusters))
 
     return top_n_samples
-
-    pass
 
 def assign_to_nearest(samples, centroids):
     """For each sample in `samples`, finds the index of the centroid in
